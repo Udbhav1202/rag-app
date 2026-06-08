@@ -1,0 +1,8 @@
+fastapi
+langchain-chroma
+langchain-openai
+langchain-text-splitters
+pydantic
+pypdf
+python-dotenv
+python-multipart

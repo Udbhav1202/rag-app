@@ -1,9 +1,10 @@
 from fastapi import APIRouter, UploadFile, File
 import shutil
-from src.services.pdf_service import extract_text
-from src.services.chunk_service import split_text
+from src.services.session_id_creation import create_session_id
+from src.services.text_extraction import extract_text
+from src.services.chunk_service import chunks_creation 
 from src.rag.chroma_store import store_in_chroma
-from src.config import UPLOAD_DIR
+from src.config.config import UPLOAD_DIR
 
 router = APIRouter()
 
@@ -15,6 +16,8 @@ def read_root():
 
 @router.post("/upload")
 def upload_pdf(file: UploadFile = File(...)):
+    
+    session_id = create_session_id()
 
     with open(f"{UPLOAD_DIR}/{file.filename}", "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
@@ -23,11 +26,15 @@ def upload_pdf(file: UploadFile = File(...)):
         f"{UPLOAD_DIR}/{file.filename}"
     )
 
-    split_chunks = split_text(extracted_text)
-
-    store_in_chroma(split_chunks)
+    split_chunks = chunks_creation(extracted_text)
+    
+    filename = file.filename.replace(".", "_").replace(" ", "_").strip()
+    
+    store_in_chroma(split_chunks, filename, session_id)
 
     return {
         "message": "Document processed successfully",
-        "chunks_stored": len(split_chunks)
+        "chunks_stored": len(split_chunks),
+        "session_id": session_id
     }
+    
