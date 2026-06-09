@@ -33,8 +33,8 @@ def upload_pdf(file: UploadFile = File(...)):
     store_in_chroma(split_chunks, filename, session_id)
 
     return {
+        "session_id": session_id,
         "message": "Document processed successfully",
-        "chunks_stored": len(split_chunks),
-        "session_id": session_id
+        "chunks_stored": len(split_chunks)
     }
     

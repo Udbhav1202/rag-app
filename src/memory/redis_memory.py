@@ -15,18 +15,8 @@ redis_client = redis.Redis(
     decode_responses=True
 )
 
-@router.get("/redis-test")
-def redis_test():
-
-    redis_client.set(
-        "test_key",
-        "Redis Connected"
-    )
-
-    value = redis_client.get(
-        "test_key"
-    )
-
-    return {
-        "message": value
-    }
+## Todo
+# - Create shared redis_client.py
+# - Remove duplicate Redis connections
+# - Import redis_client everywhere
+# - Remove unused Redis router file (if truly unused)

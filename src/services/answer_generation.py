@@ -1,15 +1,25 @@
 from langchain_openai import ChatOpenAI
 from src.config.config import CHAT_MODEL
-def generate_answer(question, context):
+from src.services.chat_history_redis import get_chat_history
+
+def generate_answer(question, context, session_id):
 
     llm = ChatOpenAI(
         model=CHAT_MODEL,
         temperature=0.2,
     )
 
+    history = get_chat_history(session_id)
+    print("Chat History:", history)
+
     prompt = f"""
-    Answer the question using the provided context.
-    dont answer if the context does not contain the answer. be concise and to the point.
+    Answer the question using the provided context and chat history.
+
+    If the answer is not present in the context, say:
+    "I could not find that information in the document."
+
+    Chat History:
+    {history}
 
     Context:
     {context}
