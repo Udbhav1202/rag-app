@@ -25,3 +25,15 @@ CHROMA_DB_PATH = os.getenv(
 UPLOAD_DIR = os.getenv(
     "UPLOAD_DIR"
 )
+
+SECRET_KEY = os.getenv(
+    "JWT_SECRET_KEY"
+)
+
+ALGORITHM = os.getenv(
+    "ALGORITHM"
+)
+
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv(
+    "ACCESS_TOKEN_EXPIRE_MINUTES"
+))

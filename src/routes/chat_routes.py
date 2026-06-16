@@ -1,18 +1,24 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from src.schemas.chat_schema import ChatRequest
 from src.rag.retrieval import search_chroma
 from src.services.answer_generation import generate_answer
 from src.services.chat_history_redis import save_message
-
+from src.services.auth_dependency import (
+    get_current_user
+)
 router = APIRouter()
 
 
 @router.post("/chat")
-def chat(request: ChatRequest):
+def chat(
+    request: ChatRequest,
+    current_user = Depends(get_current_user)
+):
 
     docs = search_chroma(
         request.question,
-        request.session_id
+        request.session_id,
+        current_user.id
     )
     
     save_message(
@@ -25,6 +31,13 @@ def chat(request: ChatRequest):
     context = "\n".join(
         [doc.page_content for doc in docs]
     )
+    
+    if not docs:
+        return {
+            "question": request.question,
+            "answer": "I could not find that information in the document.",
+            "sources": []
+        }
 
     answer = generate_answer(
         request.question,
@@ -37,9 +50,21 @@ def chat(request: ChatRequest):
         "assistant",
         answer
     )
+    
+    sources = []
+    
+    for doc in docs:
+        sources.append(
+            doc.metadata["source"]
+        )
+    
+    sources = list(
+        set(sources)
+    )
 
     
     return {
         "question": request.question,
-        "answer": answer
+        "answer": answer,
+        "sources": sources
     }
