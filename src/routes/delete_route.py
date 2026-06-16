@@ -14,7 +14,7 @@ from langchain_openai import OpenAIEmbeddings
 from langchain_chroma import Chroma
 from src.config.config import EMBEDDING_MODEL
 from src.config.config import CHROMA_DB_PATH
-
+from src.utils.logger import logger
 
 
 router = APIRouter()
@@ -41,6 +41,10 @@ def delete_document(
                 {"user_id": current_user.id}
             ]
         }
+    )
+    
+    logger.info(
+        f"Deleting document {document_id}"
     )
     
     return {

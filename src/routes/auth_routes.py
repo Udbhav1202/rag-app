@@ -7,6 +7,7 @@ from src.database.models import User
 from src.services.auth_service import hash_password, verify_password
 from fastapi import HTTPException
 from src.services.jwt_service import create_access_token
+from src.utils.logger import logger
 
 router = APIRouter()
 
@@ -39,6 +40,10 @@ def register(
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
+    
+    logger.info(
+        f"New user registration: {request.email}"
+    )
 
     return {
         "message": "User registered successfully"
@@ -73,6 +78,10 @@ def login(
             return {
                 "message": "incorrect Password"
             }
+            
+    logger.info(
+        f"Login attempt: {request.email}"
+    )
             
     return {
         "message": "User does not exist"

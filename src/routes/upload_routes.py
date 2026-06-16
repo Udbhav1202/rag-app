@@ -15,6 +15,7 @@ from src.services.chunk_service import chunks_creation
 from src.rag.chroma_store import store_in_chroma
 from src.config.config import UPLOAD_DIR
 from src.services.auth_dependency import get_current_user
+from src.utils.logger import logger
 
 
 router = APIRouter()
@@ -32,6 +33,8 @@ def upload_document(
     file: UploadFile = File(...),
     current_user=Depends(get_current_user)
 ):
+    logger.info("UPLOAD ROUTE HIT")
+    
     document_id = str(
         uuid.uuid4()
     )
@@ -122,6 +125,10 @@ def upload_document(
     )
     
     os.remove(file_path)
+    
+    logger.info(
+        f"User {current_user.id} uploading {file.filename}"
+    )
 
     return {
         "session_id": session_id,

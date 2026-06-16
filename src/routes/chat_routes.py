@@ -8,6 +8,8 @@ from src.services.auth_dependency import (
 )
 router = APIRouter()
 
+from src.utils.logger import logger
+
 
 @router.post("/chat")
 def chat(
@@ -15,6 +17,9 @@ def chat(
     current_user = Depends(get_current_user)
 ):
 
+    logger.info("CHAT ROUTE HIT")
+    print("CHAT ROUTE HIT")
+    
     docs = search_chroma(
         request.question,
         request.session_id,
@@ -61,8 +66,11 @@ def chat(
     sources = list(
         set(sources)
     )
-
     
+    logger.info(
+        f"Question received: {request.question}"
+    )
+
     return {
         "question": request.question,
         "answer": answer,

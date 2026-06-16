@@ -33,6 +33,10 @@ def search_chroma(query, session_id, user_id):
     end = time.time()
     
     logger.info(
+        f"Results Found: {len(results)}"
+    )
+    
+    logger.info(
         f"Retrieval Time: {end-start:.2f}s"
     )
 
