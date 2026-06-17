@@ -9,11 +9,3 @@ def chunks_creation(text):
     chunks = text_splitter.split_text(text)
     return chunks
 
-
-# def generate_embedding(chunks):
-#     embeddings = OpenAIEmbeddings(
-#         model="text-embedding-3-small"
-#     )
-
-#     vector = embeddings.embed_documents(chunks)
-#     return vector

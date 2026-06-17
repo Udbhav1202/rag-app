@@ -9,10 +9,6 @@ r = redis.Redis(
     db=0
 )
 
-print(
-    f"Connecting to Redis: {REDIS_HOST}:{REDIS_PORT}"
-)
-
 def save_message(session_id, role, content):
     r.rpush(
         f"session_id:{session_id}",
