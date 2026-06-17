@@ -12,7 +12,7 @@ from src.utils.logger import logger
 router = APIRouter()
 
 @router.post("/register")
-def register(
+async def register(
     request: RegisterRequest,
     db: Session = Depends(get_db)
 ):
@@ -50,7 +50,7 @@ def register(
     }
     
 @router.post("/login")
-def login(
+async def login(
     request: LoginRequest,
     db: Session = Depends(get_db)
 ):

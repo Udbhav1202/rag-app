@@ -20,7 +20,7 @@ from src.utils.logger import logger
 router = APIRouter()
 
 @router.delete("/delete/{document_id}")
-def delete_document(
+async def delete_document(
     document_id: str,
     current_user=Depends(get_current_user)
 ):

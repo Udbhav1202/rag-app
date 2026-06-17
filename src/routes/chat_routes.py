@@ -12,13 +12,12 @@ from src.utils.logger import logger
 
 
 @router.post("/chat")
-def chat(
+async def chat(
     request: ChatRequest,
     current_user = Depends(get_current_user)
 ):
 
     logger.info("CHAT ROUTE HIT")
-    print("CHAT ROUTE HIT")
     
     docs = search_chroma(
         request.question,

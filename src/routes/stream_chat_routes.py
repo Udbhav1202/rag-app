@@ -11,7 +11,7 @@ from src.services.chat_history_redis import save_message
 router = APIRouter()
 
 @router.post("/chat/stream")
-def chat_stream(
+async def chat_stream(
     request: ChatRequest,
     current_user=Depends(get_current_user)
 ):
@@ -57,8 +57,6 @@ def chat_stream(
         complete_answer = ""
 
         for chunk in stream_answer(prompt):
-            
-            print(chunk)
 
             complete_answer += chunk
 

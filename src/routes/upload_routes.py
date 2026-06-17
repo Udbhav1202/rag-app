@@ -29,7 +29,7 @@ ALLOWED_EXTENSIONS = (
 
 
 @router.post("/upload")
-def upload_document(
+async def upload_document(
     file: UploadFile = File(...),
     current_user=Depends(get_current_user)
 ):
