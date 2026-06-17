@@ -10,12 +10,13 @@ import shutil
 import os
 
 from src.services.session_id_creation import create_session_id
-from src.services.text_extraction import extract_text
-from src.services.chunk_service import chunks_creation
-from src.rag.chroma_store import store_in_chroma
 from src.config.config import UPLOAD_DIR
 from src.services.auth_dependency import get_current_user
 from src.utils.logger import logger
+from fastapi import BackgroundTasks
+from src.services.document_processor import (
+    process_document
+)
 
 
 router = APIRouter()
@@ -30,6 +31,7 @@ ALLOWED_EXTENSIONS = (
 
 @router.post("/upload")
 async def upload_document(
+    background_tasks: BackgroundTasks,
     file: UploadFile = File(...),
     current_user=Depends(get_current_user)
 ):
@@ -63,6 +65,8 @@ async def upload_document(
     file_path = (
         f"{UPLOAD_DIR}/{safe_filename}"
     )
+    
+    
 
     # Save uploaded file to disk
     with open(
@@ -75,56 +79,23 @@ async def upload_document(
             buffer
         )
 
-    # Extract text from the saved document
-    try:
-        extracted_text = extract_text(
-            file_path
-        )
-
-    except Exception as error:
-        raise HTTPException(
-            status_code=400,
-            detail=f"Failed to process file: {str(error)}"
-        )
-
-    # Reject documents with no readable text
-    if not extracted_text.strip():
-        raise HTTPException(
-            status_code=400,
-            detail="No text found in document"
-        )
-
-    # Split large text into smaller chunks
-    # before generating embeddings
-    split_chunks = chunks_creation(
-        extracted_text
-    )
-
-    # Ensure chunking produced data
-    if not split_chunks:
-        raise HTTPException(
-            status_code=400,
-            detail="Unable to create chunks"
-        )
-
     # Create a clean filename for collection metadata
+    
     filename = (
         safe_filename
         .replace(".", "_")
         .replace(" ", "_")
         .strip()
     )
-
-    # Store chunks and embeddings in ChromaDB
-    store_in_chroma(
-        split_chunks,
+    
+    background_tasks.add_task(
+        process_document,
+        file_path,
         filename,
         session_id,
         current_user.id,
         document_id
     )
-    
-    os.remove(file_path)
     
     logger.info(
         f"User {current_user.id} uploading {file.filename}"
@@ -133,6 +104,5 @@ async def upload_document(
     return {
         "session_id": session_id,
         "document_id": document_id,
-        "message": "Document uploaded",
-        "chunks_stored": len(split_chunks)
+        "message": "Document processing started"
     }
