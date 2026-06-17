@@ -1,6 +1,17 @@
 import redis
+from src.config.config import (
+    REDIS_HOST,
+    REDIS_PORT
+)
+r = redis.Redis(
+    host=REDIS_HOST,
+    port=int(REDIS_PORT),
+    db=0
+)
 
-r = redis.Redis(host="localhost", port=6379, db=0)
+print(
+    f"Connecting to Redis: {REDIS_HOST}:{REDIS_PORT}"
+)
 
 def save_message(session_id, role, content):
     r.rpush(

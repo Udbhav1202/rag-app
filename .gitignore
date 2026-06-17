@@ -1,9 +1,13 @@
 venv/
 __pycache__/
-.env
 *.pyc
-chroma_db/
-*.pdf
+
+.env
+
 uploads/
+chroma_db/
 
 users.db
+
+.vscode/
+.pytest_cache/
