@@ -5,7 +5,7 @@ from src.schemas.chat_schema import ChatRequest
 from src.rag.retrieval import search_chroma
 from src.services.auth_dependency import get_current_user
 from src.services.streaming_answer import stream_answer
-from src.services.chat_history_redis import save_message
+from src.services.chat_history_db import save_message
 
 
 router = APIRouter()

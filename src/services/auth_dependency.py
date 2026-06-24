@@ -3,7 +3,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 
 from src.database.dependencies import get_db
-from src.database.models import User
+from src.database.user_model import User
 from src.services.jwt_service import verify_access_token
 
 security = HTTPBearer()

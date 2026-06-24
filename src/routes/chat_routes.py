@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from src.schemas.chat_schema import ChatRequest
 from src.rag.retrieval import search_chroma
 from src.services.answer_generation import generate_answer
-from src.services.chat_history_redis import save_message
+from src.services.chat_history_db import save_message
 from src.services.auth_dependency import (
     get_current_user
 )
@@ -27,6 +27,7 @@ async def chat(
     
     save_message(
         request.session_id,
+        current_user.id,
         "user",
         request.question
     )
@@ -51,6 +52,7 @@ async def chat(
     
     save_message(
         request.session_id,
+        current_user.id,
         "assistant",
         answer
     )

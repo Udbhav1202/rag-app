@@ -1,29 +1,24 @@
-# RAG Document Chat Application
+# DocChat AI - RAG Based Document Chat Application
 
 ## Overview
 
-A production-style Retrieval-Augmented Generation (RAG) application that allows users to upload documents and chat with them using AI.
-
-The application extracts text from documents, generates embeddings, stores them in ChromaDB, retrieves relevant chunks during conversations, and generates contextual answers using OpenAI models.
-
----
+DocChat AI is a Retrieval-Augmented Generation (RAG) application that allows users to upload documents and ask questions about their content. The application extracts text, generates embeddings, stores them in a vector database, retrieves relevant context, and generates accurate responses using OpenAI LLMs.
 
 ## Features
 
-* User Authentication (JWT)
-* User Registration & Login
-* PDF, DOCX, and TXT Support
-* ChromaDB Vector Storage
+* User Authentication with JWT
+* Upload PDF, DOCX, and TXT files
+* Background document processing
+* Text extraction and chunking
 * OpenAI Embeddings
-* Document-based Question Answering
-* Redis Chat Memory
-* User-level Document Isolation
-* Source Citations
-* Delete Document API
-* Streaming Responses
-* Background Document Processing
-* Logging & Monitoring
-* Docker & Docker Compose Support
+* ChromaDB Vector Storage
+* Semantic Search
+* Context-Aware Question Answering
+* Persistent Chat History using SQLite
+* Redis Caching
+* Dockerized Deployment
+* Token Usage and Cost Tracking
+* User-based Document Isolation
 
 ---
 
@@ -34,28 +29,32 @@ The application extracts text from documents, generates embeddings, stores them 
 * FastAPI
 * Python
 
+### Authentication
+
+* JWT Authentication
+* Passlib
+* Python-Jose
+
 ### Database
 
 * SQLite
 * SQLAlchemy
 
-### AI / RAG
+### Vector Database
 
-* LangChain
-* OpenAI
 * ChromaDB
 
-### Caching & Memory
+### AI & RAG
+
+* OpenAI
+* LangChain
+* OpenAI Embeddings
+
+### Caching
 
 * Redis
 
-### Authentication
-
-* JWT
-* Passlib
-* Bcrypt
-
-### Deployment
+### Containerization
 
 * Docker
 * Docker Compose
@@ -64,19 +63,25 @@ The application extracts text from documents, generates embeddings, stores them 
 
 ## Architecture
 
-User → FastAPI → Authentication Layer
-
-Upload Flow:
-
-User → Upload API → Text Extraction → Chunking → Embeddings → ChromaDB
-
-Chat Flow:
-
-User Question → Retrieval → ChromaDB → Relevant Chunks → OpenAI → Response
-
-Memory Flow:
-
-User → Redis Chat History → Context Preservation
+User Uploads Document
+↓
+Text Extraction
+↓
+Chunking
+↓
+OpenAI Embeddings
+↓
+ChromaDB Storage
+↓
+User Question
+↓
+Semantic Search
+↓
+Context Retrieval
+↓
+OpenAI LLM
+↓
+Final Answer
 
 ---
 
@@ -84,119 +89,145 @@ User → Redis Chat History → Context Preservation
 
 ### Authentication
 
+#### Register
+
 POST /register
+
+#### Login
 
 POST /login
 
-### Document Management
+---
+
+### Documents
+
+#### Upload Document
 
 POST /upload
 
-DELETE /delete/{document_id}
+Supported Formats:
+
+* PDF
+* DOCX
+* TXT
+
+---
 
 ### Chat
 
+#### Ask Questions
+
 POST /chat
 
-POST /chat/stream
+Example Request:
+
+```json
+{
+    "session_id": "session-id",
+    "question": "What is this document about?"
+}
+```
 
 ---
 
-## Project Structure
+## Environment Variables
 
-src/
+Create a `.env` file:
 
-├── config/
+```env
+OPENAI_API_KEY=your_api_key
 
-├── database/
-
-├── rag/
-
-├── routes/
-
-├── schemas/
-
-├── services/
-
-├── utils/
-
-├── main.py
-
----
-
-## Running Locally
-
-### Clone Repository
-
-git clone <repository-url>
-
-cd rag-app
-
-### Create Virtual Environment
-
-python -m venv venv
-
-### Activate Virtual Environment
-
-Windows:
-
-venv\Scripts\activate
-
-### Install Dependencies
-
-pip install -r requirements.txt
-
-### Configure Environment Variables
-
-Create a .env file and add:
-
-OPENAI_API_KEY=your_key
-
-REDIS_HOST=localhost
-
-REDIS_PORT=6379
-
-SECRET_KEY=your_secret
-
+SECRET_KEY=your_secret_key
 ALGORITHM=HS256
-
 ACCESS_TOKEN_EXPIRE_MINUTES=30
 
-### Run Application
+CHAT_MODEL=gpt-4.1-mini
+EMBEDDING_MODEL=text-embedding-3-small
 
+REDIS_HOST=localhost
+REDIS_PORT=6379
+```
+
+---
+
+## Installation
+
+Clone Repository
+
+```bash
+git clone <repository-url>
+cd rag-app
+```
+
+Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+Run Application
+
+```bash
 uvicorn src.main:app --reload
+```
+
+Swagger Documentation
+
+```text
+http://127.0.0.1:8000/docs
+```
 
 ---
 
 ## Docker Setup
 
-### Build Image
+Build Image
 
+```bash
 docker build -t rag-app .
+```
 
-### Run Using Docker Compose
+Run Container
 
+```bash
+docker run -p 8000:8000 --env-file .env rag-app
+```
+
+Run with Docker Compose
+
+```bash
 docker compose up
+```
 
-Application:
+---
 
-http://localhost:8000/docs
+## Key Learnings
+
+* Retrieval-Augmented Generation (RAG)
+* FastAPI Development
+* JWT Authentication
+* SQLAlchemy ORM
+* ChromaDB
+* OpenAI API Integration
+* Redis Caching
+* Background Tasks
+* Docker Containerization
+* Production-Oriented Backend Architecture
 
 ---
 
 ## Future Improvements
 
 * PostgreSQL Integration
-* Celery Background Workers
-* Document Processing Status Tracking
-* Multi-Document Collections
-* CI/CD Pipeline
-* Cloud Deployment
-* Role-Based Access Control
+* Streaming Responses
+* React Frontend
+* AWS Deployment
+* Rate Limiting
+* Document Management APIs
+* Automated Testing
 
 ---
 
 ## Author
 
 Udbhav Srivastava
-

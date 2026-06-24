@@ -1,12 +1,8 @@
 import redis
+from src.memory.redis_memory import redis_client as r
 from src.config.config import (
     REDIS_HOST,
     REDIS_PORT
-)
-r = redis.Redis(
-    host=REDIS_HOST,
-    port=int(REDIS_PORT),
-    db=0
 )
 
 def save_message(session_id, role, content):

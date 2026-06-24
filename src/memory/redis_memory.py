@@ -15,8 +15,3 @@ redis_client = redis.Redis(
     decode_responses=True
 )
 
-## Todo
-# - Create shared redis_client.py
-# - Remove duplicate Redis connections
-# - Import redis_client everywhere
-# - Remove unused Redis router file (if truly unused)

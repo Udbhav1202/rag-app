@@ -1,8 +1,10 @@
 from langchain_openai import ChatOpenAI
 from src.config.config import CHAT_MODEL
-from src.services.chat_history_redis import get_chat_history
+from src.services.chat_history_db import get_chat_history
 from langchain_community.callbacks import get_openai_callback
 from src.utils.logger import logger
+from src.services.cache import r
+import json
 
 def generate_answer(question, context, session_id):
 
@@ -31,6 +33,20 @@ def generate_answer(question, context, session_id):
     Question:
     {question}
     """
+    
+    cached_answer = r.get(
+        f"answer:{session_id}:{question}"
+    )
+
+    if cached_answer:
+    
+        logger.info("ANSWER CACHE HIT")
+    
+        return json.loads(
+            cached_answer
+        )
+
+    logger.info("ANSWER CACHE MISS")
 
     try:
         with get_openai_callback() as cb:
@@ -56,5 +72,10 @@ def generate_answer(question, context, session_id):
             f"Failed to generate answer: {error}"
         )
         raise
+    
+    r.set(
+        f"answer:{session_id}:{question}",
+        json.dumps(response.content)
+    )
 
     return response.content

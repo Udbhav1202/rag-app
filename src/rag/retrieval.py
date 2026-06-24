@@ -5,8 +5,9 @@ import time
 from src.utils.logger import logger
 from src.config.config import CHROMA_DB_PATH
 
+
 def search_chroma(query, session_id, user_id):
-    
+
     embeddings = OpenAIEmbeddings(
         model=EMBEDDING_MODEL
     )
@@ -16,7 +17,7 @@ def search_chroma(query, session_id, user_id):
         embedding_function=embeddings,
         collection_name="documents"
     )
-    
+
     start = time.time()
 
     results = vector_store.similarity_search(
@@ -29,13 +30,13 @@ def search_chroma(query, session_id, user_id):
             ]
         }
     )
-    
+
     end = time.time()
-    
+
     logger.info(
         f"Results Found: {len(results)}"
     )
-    
+
     logger.info(
         f"Retrieval Time: {end-start:.2f}s"
     )
