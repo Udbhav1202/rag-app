@@ -1,12 +1,24 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-DATABASE_URL = "sqlite:///users.db"
-
-engine = create_engine(
-    DATABASE_URL,
-    connect_args={"check_same_thread": False}
+from src.config.config import (
+    POSTGRES_USER,
+    POSTGRES_PASSWORD,
+    POSTGRES_HOST,
+    POSTGRES_PORT,
+    POSTGRES_DB,
 )
+
+DATABASE_URL = (
+    f"postgresql+psycopg://"
+    f"{POSTGRES_USER}:"
+    f"{POSTGRES_PASSWORD}@"
+    f"{POSTGRES_HOST}:"
+    f"{POSTGRES_PORT}/"
+    f"{POSTGRES_DB}"
+)
+
+engine = create_engine(DATABASE_URL)
 
 SessionLocal = sessionmaker(
     autocommit=False,

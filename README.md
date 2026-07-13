@@ -14,7 +14,7 @@ DocChat AI is a Retrieval-Augmented Generation (RAG) application that allows use
 * ChromaDB Vector Storage
 * Semantic Search
 * Context-Aware Question Answering
-* Persistent Chat History using SQLite
+* Persistent Chat History using PostgreSQL
 * Redis Caching
 * Dockerized Deployment
 * Token Usage and Cost Tracking
@@ -37,7 +37,7 @@ DocChat AI is a Retrieval-Augmented Generation (RAG) application that allows use
 
 ### Database
 
-* SQLite
+* PostgreSQL
 * SQLAlchemy
 
 ### Vector Database
@@ -82,6 +82,14 @@ Context Retrieval
 OpenAI LLM
 ↓
 Final Answer
+
+FastAPI
+      │
+ ┌────┼────┐
+ ▼    ▼    ▼
+PostgreSQL
+Redis
+ChromaDB
 
 ---
 
@@ -146,6 +154,12 @@ EMBEDDING_MODEL=text-embedding-3-small
 
 REDIS_HOST=localhost
 REDIS_PORT=6379
+
+POSTGRES_USER=
+POSTGRES_PASSWORD=
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
+POSTGRES_DB=
 ```
 
 ---
@@ -218,10 +232,6 @@ docker compose up
 
 ## Future Improvements
 
-* PostgreSQL Integration
-* Streaming Responses
-* React Frontend
-* AWS Deployment
 * Rate Limiting
 * Document Management APIs
 * Automated Testing

@@ -11,3 +11,7 @@ users.db
 
 .vscode/
 .pytest_cache/
+
+.idea/
+
+*.db
