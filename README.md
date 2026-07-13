@@ -6,19 +6,19 @@ DocChat AI is a Retrieval-Augmented Generation (RAG) application that allows use
 
 ## Features
 
-* User Authentication with JWT
-* Upload PDF, DOCX, and TXT files
-* Background document processing
-* Text extraction and chunking
-* OpenAI Embeddings
-* ChromaDB Vector Storage
-* Semantic Search
-* Context-Aware Question Answering
-* Persistent Chat History using PostgreSQL
-* Redis Caching
-* Dockerized Deployment
-* Token Usage and Cost Tracking
-* User-based Document Isolation
+- JWT-based User Authentication
+- Upload PDF, DOCX, and TXT Documents
+- Background Document Processing
+- Text Extraction and Intelligent Chunking
+- OpenAI Embeddings Generation
+- ChromaDB Vector Storage
+- Semantic Search using Vector Similarity
+- Context-Aware Question Answering (RAG)
+- Persistent Chat History using PostgreSQL
+- Redis Integration (Cache-Aside Pattern Implementation)
+- Docker & Docker Compose Support
+- Token Usage and Cost Tracking
+- User-Specific Document Isolation
 
 ---
 
@@ -63,35 +63,52 @@ DocChat AI is a Retrieval-Augmented Generation (RAG) application that allows use
 
 ## Architecture
 
-User Uploads Document
-↓
-Text Extraction
-↓
-Chunking
-↓
-OpenAI Embeddings
-↓
-ChromaDB Storage
-↓
-User Question
-↓
-Semantic Search
-↓
-Context Retrieval
-↓
-OpenAI LLM
-↓
-Final Answer
-
-FastAPI
-      │
- ┌────┼────┐
- ▼    ▼    ▼
-PostgreSQL
-Redis
-ChromaDB
-
+```
+                +------------------+
+                |   React (UI)     |
+                +--------+---------+
+                         |
+                         v
+                +------------------+
+                |     FastAPI      |
+                +--------+---------+
+                         |
+      +------------------+------------------+
+      |                  |                  |
+      v                  v                  v
++-------------+   +-------------+   +-------------+
+| PostgreSQL  |   |    Redis    |   |  ChromaDB   |
+| Users &     |   |   Caching   |   | Embeddings  |
+| Chat History|   |             |   | & Retrieval |
++-------------+   +-------------+   +-------------+
+                         |
+                         v
+                +------------------+
+                |   OpenAI APIs    |
+                | Chat & Embeddings|
+                +------------------+
+```
 ---
+
+## Project Structure
+
+```
+DocChatAI/
+├── src/
+│   ├── config/
+│   ├── database/
+│   ├── rag/
+│   ├── routes/
+│   ├── schemas/
+│   ├── services/
+│   ├── utils/
+│   └── main.py
+├── Dockerfile
+├── docker-compose.yml
+├── requirements.txt
+├── README.md
+└── .gitignore
+```
 
 ## API Endpoints
 
@@ -143,7 +160,13 @@ Example Request:
 Create a `.env` file:
 
 ```env
-OPENAI_API_KEY=your_api_key
+OPENAI_API_KEY=your_openai_api_key
+
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=docchat_ai
+POSTGRES_HOST=localhost
+POSTGRES_PORT=5432
 
 SECRET_KEY=your_secret_key
 ALGORITHM=HS256
@@ -154,12 +177,6 @@ EMBEDDING_MODEL=text-embedding-3-small
 
 REDIS_HOST=localhost
 REDIS_PORT=6379
-
-POSTGRES_USER=
-POSTGRES_PASSWORD=
-POSTGRES_HOST=localhost
-POSTGRES_PORT=5432
-POSTGRES_DB=
 ```
 
 ---
@@ -217,16 +234,17 @@ docker compose up
 
 ## Key Learnings
 
-* Retrieval-Augmented Generation (RAG)
-* FastAPI Development
-* JWT Authentication
-* SQLAlchemy ORM
-* ChromaDB
-* OpenAI API Integration
-* Redis Caching
-* Background Tasks
-* Docker Containerization
-* Production-Oriented Backend Architecture
+- Retrieval-Augmented Generation (RAG)
+- FastAPI Backend Development
+- JWT Authentication
+- SQLAlchemy ORM
+- PostgreSQL Integration
+- Redis Cache-Aside Pattern
+- ChromaDB Vector Database
+- LangChain
+- OpenAI API Integration
+- Docker & Docker Compose
+- Production-Oriented Backend Architecture
 
 ---
 
