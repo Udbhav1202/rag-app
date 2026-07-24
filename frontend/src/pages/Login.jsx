@@ -33,41 +33,51 @@ function Login() {
   return (
     <AuthLayout>
       <Card>
-        <h1 className="text-3xl font-bold text-center">DocChatAI</h1>
-
-        <p className="text-center text-gray-500 mt-2 mb-8">
-          Chat with your documents using AI
-        </p>
+        <div className="mb-8 text-center">
+          <span className="font-mono text-xs uppercase tracking-[0.2em] text-[#c9974b]">
+            Vol. I
+          </span>
+          <h1 className="font-display mt-2 text-4xl font-semibold text-[#ede4d3]">
+            DocChatAI
+          </h1>
+          <p className="mt-2 text-sm text-[#a69c89]">
+            Chat with your documents using AI
+          </p>
+        </div>
 
         <form onSubmit={handleLogin} className="space-y-5">
           <div>
-            <label className="mb-2 block font-medium">Email</label>
+            <label className="mb-2 block font-mono text-xs uppercase tracking-wide text-[#a69c89]">
+              Email
+            </label>
 
             <Input
               type="email"
-              placeholder="Enter your email"
+              placeholder="you@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
 
           <div>
-            <label className="mb-2 block font-medium">Password</label>
+            <label className="mb-2 block font-mono text-xs uppercase tracking-wide text-[#a69c89]">
+              Password
+            </label>
 
             <Input
               type="password"
-              placeholder="Enter your password"
+              placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
-          <Button type="submit">Login</Button>
+          <Button type="submit">Enter</Button>
         </form>
 
-        <p className="mt-6 text-center text-gray-500">
+        <p className="mt-6 text-center text-sm text-[#6f6656]">
           Don't have an account?{" "}
-          <Link to="/register" className="text-blue-600 hover:underline">
+          <Link to="/register" className="text-[#c9974b] hover:text-[#e3b463]">
             Register
           </Link>
         </p>

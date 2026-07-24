@@ -1,12 +1,42 @@
 @import "tailwindcss";
 
 :root {
-  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
-  color: #1e293b;
-  background: #f8fafc;
+  --rr-base: #15130f;
+  --rr-panel: #1c1914;
+  --rr-card: #211d16;
+  --rr-card-hover: #272219;
+  --rr-border: #34301f;
+  --rr-accent: #c9974b;
+  --rr-accent-bright: #e3b463;
+  --rr-text: #ede4d3;
+  --rr-text-muted: #a69c89;
+  --rr-text-faint: #6f6656;
+  --rr-danger: #b5533f;
 }
 
 body {
-  margin: 0;
-  min-width: 320px;
+  font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+  background-color: var(--rr-base);
+  color: var(--rr-text);
+}
+
+.font-display {
+  font-family: "Fraunces", ui-serif, Georgia, serif;
+}
+
+.font-mono {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+/* subtle grain so the dark background doesn't look flat/CSS-gradient-generic */
+.rr-grain {
+  position: relative;
+}
+.rr-grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }

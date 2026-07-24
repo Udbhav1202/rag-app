@@ -1,15 +1,21 @@
 import { FileText } from "lucide-react";
 
 function SidebarDocumentItem({ document, isSelected, onSelect }) {
-  return <button
-    type="button"
-    onClick={() => onSelect(document)}
-    title={document.filename}
-    className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm transition ${isSelected ? "bg-indigo-50 text-indigo-700" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"}`}
-  >
-    <FileText size={18} className={`shrink-0 ${isSelected ? "text-indigo-600" : "text-slate-400"}`} />
-    <span className="truncate font-medium">{document.filename}</span>
-  </button>;
+  return (
+    <button
+      type="button"
+      onClick={() => onSelect(document)}
+      title={document.filename}
+      className={`flex w-full items-center gap-3 rounded-xl border px-3 py-2.5 text-left text-sm transition ${
+        isSelected
+          ? "border-[#c9974b]/50 bg-[#c9974b]/10 text-[#e3b463]"
+          : "border-transparent text-[#a69c89] hover:border-[#34301f] hover:bg-[#211d16] hover:text-[#ede4d3]"
+      }`}
+    >
+      <FileText size={17} className={`shrink-0 ${isSelected ? "text-[#c9974b]" : "text-[#6f6656]"}`} />
+      <span className="truncate font-mono text-[13px] font-medium">{document.filename}</span>
+    </button>
+  );
 }
 
 export default SidebarDocumentItem;

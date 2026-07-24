@@ -17,7 +17,7 @@ function Chat() {
   };
 
   return (
-    <div className="flex h-dvh overflow-hidden bg-slate-50 text-slate-800">
+    <div className="flex h-dvh overflow-hidden bg-[#15130f] text-[#ede4d3]">
       <Sidebar
         isOpen={sidebarOpen}
         onToggle={() => setSidebarOpen((isOpen) => !isOpen)}
@@ -28,6 +28,11 @@ function Chat() {
         onNewChat={session.handleNewChat}
       />
       <main className="relative flex min-w-0 flex-1 flex-col">
+        {/* lamp glow signature element behind header */}
+        <div
+          className="pointer-events-none absolute left-1/2 top-0 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full opacity-20 blur-3xl"
+          style={{ background: "radial-gradient(circle, #c9974b 0%, transparent 70%)" }}
+        />
         <ChatHeader onLogout={handleLogout} />
         <ChatContent session={session} />
       </main>
