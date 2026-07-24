@@ -60,29 +60,31 @@ async def login(
         .first()
     )
 
-    if existing_user:
-        if verify_password(request.password, existing_user.hashed_password):
-            
-            token = create_access_token(
-                {
-                    "sub": existing_user.email,
-                    "user_id": existing_user.id
-                }
-            )
+    if not existing_user:
+        logger.info(f"Login attempt: {request.email}")
 
-            return {
-                "access_token": token,
-                "token_type": "bearer"
-            }
-        else:
-            return {
-                "message": "incorrect Password"
-            }
-            
-    logger.info(
-        f"Login attempt: {request.email}"
+        raise HTTPException(
+            status_code=404,
+            detail="User does not exist"
+        )
+
+    if not verify_password(
+        request.password,
+        existing_user.hashed_password
+    ):
+        raise HTTPException(
+            status_code=401,
+            detail="Incorrect password"
+        )
+
+    token = create_access_token(
+        {
+            "sub": existing_user.email,
+            "user_id": existing_user.id
+        }
     )
-            
+
     return {
-        "message": "User does not exist"
+        "access_token": token,
+        "token_type": "bearer"
     }
